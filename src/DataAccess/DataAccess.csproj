@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.1</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <AssemblyName>WordMix.DataAccess</AssemblyName>
         <RootNamespace>WordMix.DataAccess</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Byndyusoft.Data.Relational.Abstractions" Version="0.14.4"/>
+        <PackageReference Include="Byndyusoft.Data.Relational.Abstractions" Version="0.15.1"/>
     </ItemGroup>
 
 </Project>

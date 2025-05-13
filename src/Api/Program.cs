@@ -1,10 +1,10 @@
+using Asp.Versioning.ApiExplorer;
 using Byndyusoft.Logging.Builders;
 using Byndyusoft.Logging.Configuration;
 using Byndyusoft.MaskedSerialization.Serilog.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Npgsql;
 using Serilog;
 using Serilog.Configuration;
@@ -12,7 +12,6 @@ using WordMix.Api.Infrastructure.OpenTelemetry;
 using WordMix.Api.Infrastructure.Serialization;
 using WordMix.Api.Infrastructure.Swagger;
 using WordMix.Api.Infrastructure.Versioning;
-using WordMix.Api.Installers;
 
 var serviceName = typeof(WordMix.Api.Program).Assembly.GetName().Name;
 var serviceVersion = typeof(WordMix.Api.Program).Assembly.GetName().Version;
@@ -53,21 +52,15 @@ services
     .AddVersioning()
     .AddSwagger();
 services
-    .AddRelationalDb(NpgsqlFactory.Instance, builder.Configuration.GetConnectionString("Main"))
-    .AddApplicationServices();
+    .AddRelationalDb(NpgsqlFactory.Instance, builder.Configuration.GetConnectionString("Main"));
 
 var app = builder.Build();
 app
     .UseHealthChecks("/healthz")
     .UseOpenTelemetryPrometheusScrapingEndpoint()
     .UseRouting()
-    .UseEndpoints(endpoints => endpoints.MapControllers());
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    .UseEndpoints(endpoints => endpoints.MapControllers())
+    .UseSwagger(app.Services.GetRequiredService<IApiVersionDescriptionProvider>());
 
 app.Run();
 

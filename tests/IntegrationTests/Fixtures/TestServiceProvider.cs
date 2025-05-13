@@ -2,7 +2,6 @@
 
 using System;
 using System.IO;
-using Api.Installers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -31,8 +30,7 @@ public class TestServiceProvider
 
     private IServiceProvider CreateServiceProvider(IConfiguration configuration)
     {
-        var serviceProvider = new ServiceCollection().AddApplicationServices()
-                                                     .AddLogging()
+        var serviceProvider = new ServiceCollection().AddLogging()
                                                      .BuildServiceProvider();
 
         return serviceProvider;

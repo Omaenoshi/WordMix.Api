@@ -1,13 +1,12 @@
-﻿namespace WordMix.Api.Contracts.TemplateEntity
+﻿namespace WordMix.Api.Contracts.TemplateEntity;
+
+/// <summary>
+///     Template entity information
+/// </summary>
+public class TemplateDto
 {
     /// <summary>
-    ///     Template entity information
+    ///     Entity id
     /// </summary>
-    public class TemplateDto
-    {
-        /// <summary>
-        ///     Entity id
-        /// </summary>
-        public int Id { get; set; }
-    }
+    public int Id { get; set; }
 }
