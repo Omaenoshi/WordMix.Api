@@ -1,28 +1,27 @@
-﻿namespace WordMix.Client.Clients
+﻿namespace WordMix.Client.Clients;
+
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+using Api.Contracts.TemplateEntity;
+using Byndyusoft.ApiClient;
+using Microsoft.Extensions.Options;
+using Settings;
+
+/// <inheritdoc cref="ITemplateClient" />
+public class TemplateClient : BaseClient, ITemplateClient
 {
-    using System.Net.Http;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Api.Contracts.TemplateEntity;
-    using Byndyusoft.ApiClient;
-    using Microsoft.Extensions.Options;
-    using Settings;
+    private const string ApiPrefix = "api/v1/templates";
 
-    /// <inheritdoc cref="ITemplateClient" />
-    public class TemplateClient : BaseClient, ITemplateClient
+    public TemplateClient(
+        HttpClient httpClient,
+        IOptions<TemplateApiSettings> apiSettings) : base(httpClient, apiSettings)
     {
-        private const string ApiPrefix = "api/v1/templates";
+    }
 
-        public TemplateClient(
-            HttpClient httpClient,
-            IOptions<TemplateApiSettings> apiSettings) : base(httpClient, apiSettings)
-        {
-        }
-
-        public async Task<TemplateDto> GetTemplate(int templateId, CancellationToken cancellationToken)
-        {
-            var templateDto = await GetAsync<TemplateDto>($"{ApiPrefix}/{templateId}", cancellationToken);
-            return templateDto;
-        }
+    public async Task<TemplateDto> GetTemplate(int templateId, CancellationToken cancellationToken)
+    {
+        var templateDto = await GetAsync<TemplateDto>($"{ApiPrefix}/{templateId}", cancellationToken);
+        return templateDto;
     }
 }

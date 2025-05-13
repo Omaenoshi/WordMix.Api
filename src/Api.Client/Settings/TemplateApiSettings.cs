@@ -1,8 +1,7 @@
-﻿namespace WordMix.Client.Settings
-{
-    using Byndyusoft.ApiClient;
+﻿namespace WordMix.Client.Settings;
 
-    public class TemplateApiSettings : ApiClientSettings
-    {
-    }
+using Byndyusoft.ApiClient;
+
+public class TemplateApiSettings : ApiClientSettings
+{
 }

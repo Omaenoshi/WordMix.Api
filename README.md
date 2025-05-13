@@ -12,8 +12,10 @@
 
 Make sure you have installed all of the following prerequisites on your development machine:
 
-- Git - [Download & Install Git](https://git-scm.com/downloads). OSX and Linux machines typically have this already installed.
-- .NET Core (version 8.0 or higher) - [Download & Install .NET Core](https://dotnet.microsoft.com/download/dotnet-core/8.0).
+- Git - [Download & Install Git](https://git-scm.com/downloads). OSX and Linux machines typically have this already
+  installed.
+- .NET Core (version 8.0 or
+  higher) - [Download & Install .NET Core](https://dotnet.microsoft.com/download/dotnet-core/8.0).
 
 ## Deployment
 
@@ -22,9 +24,11 @@ Service deployment description
 ## Configuration
 
 ### ConnectionStrings
+
 Database connection settings.
 
 Example:
+
 ```json
 {
   "ConnectionStrings": {
@@ -34,9 +38,11 @@ Example:
 ```
 
 ### Logging
+
 Logging settings.
 
 Example:
+
 ```json
 {
   "Logging": {
@@ -50,9 +56,11 @@ Example:
 ```
 
 ### OpenTelemetry
+
 OpenTelemetry Exporter settings.
 
 Example:
+
 ```json
 {
   "OtlpExporterOptions": {
@@ -63,7 +71,8 @@ Example:
 
 ## AspNet Metrics
 
-AspNet metrics format is described in [Byndyusoft.Execution.Metrics](https://github.com/Byndyusoft/Byndyusoft.Execution.Metrics) Readme file.
+AspNet metrics format is described
+in [Byndyusoft.Execution.Metrics](https://github.com/Byndyusoft/Byndyusoft.Execution.Metrics) Readme file.
 
 ## General folders layout
 
@@ -77,6 +86,7 @@ AspNet metrics format is described in [Byndyusoft.Execution.Metrics](https://git
 - Migrator - Database migrator based on https://github.com/fluentmigrator/fluentmigrator
 
 ### tests
+
 - IntegrationTests - Web API Integration Tests
 - UnitTests - Unit Tests
 
