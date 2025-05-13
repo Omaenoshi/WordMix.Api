@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <PublishDir>/app/out/api</PublishDir>
+        <AssemblyName Condition="'$(SERVICE_NAME)' != ''">$(SERVICE_NAME)</AssemblyName>
+        <AssemblyName Condition="'$(SERVICE_NAME)' == ''">wordmix-api-api</AssemblyName>
+        <RootNamespace>WordMix.Api</RootNamespace>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0"/>
+        <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0"/>
+        <PackageReference Include="Byndyusoft.AspNetCore.Instrumentation.Tracing" Version="1.0.0"/>
+        <PackageReference Include="Byndyusoft.Data.Relational" Version="0.14.4"/>
+        <PackageReference Include="Byndyusoft.Execution.Metrics.AspNet" Version="2.0.0"/>
+        <PackageReference Include="Byndyusoft.Logging" Version="3.0.1"/>
+        <PackageReference Include="Byndyusoft.Logging.OpenTelemetry" Version="3.0.1"/>
+        <PackageReference Include="Byndyusoft.MaskedSerialization.Serilog" Version="3.0.0"/>
+        <PackageReference Include="Byndyusoft.Telemetry.Logging.Serilog" Version="0.0.4"/>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.4"/>
+        <PackageReference Include="Npgsql.OpenTelemetry" Version="9.0.2"/>
+        <PackageReference Include="OpenTelemetry" Version="1.10.0"/>
+        <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.10.0"/>
+        <PackageReference Include="OpenTelemetry.Exporter.Prometheus.AspNetCore" Version="1.8.0-rc.1"/>
+        <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.10.0"/>
+        <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.10.1"/>
+        <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.10.0"/>
+        <PackageReference Include="OpenTelemetry.Instrumentation.Runtime" Version="1.10.0"/>
+        <PackageReference Include="Serilog.Extensions.Hosting" Version="9.0.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Api.Contracts\Api.Contracts.csproj"/>
+        <ProjectReference Include="..\Domain\Domain.csproj"/>
+    </ItemGroup>
+
+</Project>
