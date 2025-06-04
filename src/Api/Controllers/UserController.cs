@@ -27,4 +27,15 @@ public class UserController
 
         return res.ToActionResult();
     }
+    
+    /// <summary>
+    ///     Подтверждение регистрации
+    /// </summary>
+    [HttpGet("confirm-email")]
+    public async Task ConfirmEmail([FromQuery] string token,
+                                                 [FromServices] ConfirmEmailUseCase useCase,
+                                                 CancellationToken cancellationToken)
+    {
+        await useCase.ExecuteAsync(token, cancellationToken);
+    }
 }

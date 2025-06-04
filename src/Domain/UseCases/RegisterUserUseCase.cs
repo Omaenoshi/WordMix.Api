@@ -10,32 +10,36 @@ using Byndyusoft.Data.Relational;
 using Byndyusoft.ModelResult.ModelResults;
 using Entities;
 using Repositories;
+using Services.Interfaces;
 
-public class RegisterUserUseCase(IDbSessionFactory sessionFactory,
-                                 IUserRepository userRepository,
-                                 IPlayerRepository playerRepository)
+public class RegisterUserUseCase(
+    IDbSessionFactory sessionFactory,
+    IUserRepository userRepository,
+    IPlayerRepository playerRepository,
+    IEmailService emailService)
 {
     public async Task<ModelResult> ExecuteAsync(RegisterUserDto dto, CancellationToken cancellationToken)
     {
         await using var session = await sessionFactory.CreateCommittableSessionAsync(cancellationToken);
-        
+
         var user = await userRepository.GetByEmailAsync(dto.Email, cancellationToken);
 
         if (user != null)
             return new ErrorModelResult("Email", "Пользователь с такой почтой уже существует");
 
         var salt = GenerateSalt();
-        var passwordHash = HashPassword(dto.Password, salt);
+        var verificationToken = Guid.NewGuid().ToString("N");
         var newUser = new User
                           {
                               Email = dto.Email,
                               CreatedAt = DateTimeOffset.UtcNow,
                               IsVerified = false,
                               UpdatedAt = null,
-                              PasswordHash = passwordHash,
-                              PasswordSalt = salt
+                              PasswordHash = HashPassword(dto.Password, salt),
+                              PasswordSalt = salt,
+                              VerificationToken = verificationToken
                           };
-        
+
         await userRepository.InsertAsync(newUser, cancellationToken);
 
         var player = new Player
@@ -45,14 +49,20 @@ public class RegisterUserUseCase(IDbSessionFactory sessionFactory,
                              Experience = 0,
                              AvatarUrl = null
                          };
-        
+
         await playerRepository.InsertAsync(player, cancellationToken);
-        
+
         await session.CommitAsync(cancellationToken);
-        
+
+        var confirmationLink = $"https://your-app.com/confirm-email?token={verificationToken}";
+        const string subject = "Подтверждение регистрации";
+        var body = $"Пожалуйста, подтвердите вашу почту, перейдя по ссылке: {confirmationLink}";
+
+        await emailService.SendAsync(dto.Email, subject, body, cancellationToken);
+
         return ModelResult.Ok;
     }
-    
+
     private static byte[] GenerateSalt()
     {
         var buffer = new byte[16];
