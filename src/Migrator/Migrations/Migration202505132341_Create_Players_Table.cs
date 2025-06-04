@@ -12,6 +12,7 @@ public class Migration202505132341_Create_Players_Table : ForwardOnlyMigration
               .WithColumn("username").AsString().NotNullable().Unique().WithColumnDescription("Имя пользователя")
               .WithColumn("experience").AsInt32().NotNullable().WithColumnDescription("Опыт")
               .WithColumn("balance").AsInt32().NotNullable().WithColumnDescription("Баланс")
-              .WithColumn("avatar_url").AsString().Nullable().WithColumnDescription("Ссылка на аватар");
+              .WithColumn("avatar_url").AsString().Nullable().WithColumnDescription("Ссылка на аватар")
+              .WithColumn("user_id").AsInt64().NotNullable().ForeignKey("users", "id").WithColumnDescription("ИД пользователя");
     }
 }

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 ///     Контроллер для работы с пользователями
 /// </summary>
 [ApiController]
+[Route("[controller]")]
 [ApiVersion("1.0")]
 public class UserController
 {
@@ -31,11 +32,24 @@ public class UserController
     /// <summary>
     ///     Подтверждение регистрации
     /// </summary>
-    [HttpGet("confirm-email")]
+    [HttpGet("[action]")]
     public async Task ConfirmEmail([FromQuery] string token,
                                                  [FromServices] ConfirmEmailUseCase useCase,
                                                  CancellationToken cancellationToken)
     {
         await useCase.ExecuteAsync(token, cancellationToken);
+    }
+    
+    /// <summary>
+    ///     Авторизация пользователя
+    /// </summary>
+    [HttpPost("[action]")]
+    public async Task<ActionResult<TokenDto>> Login([FromBody] LoginDto dto,
+                                          [FromServices] LoginUserUseCase useCase,
+                                          CancellationToken cancellationToken)
+    {
+        var result = await useCase.ExecuteAsync(dto, cancellationToken);
+        
+        return result.ToActionResult();
     }
 }

@@ -13,4 +13,6 @@ public interface IUserRepository
     Task<User?> GetByVerificationTokenAsync(string token, CancellationToken cancellationToken);
     
     Task UpdateAsync(User user, CancellationToken cancellationToken);
+    
+    Task<User?> GetByIdAsync(long id, CancellationToken cancellationToken);
 }

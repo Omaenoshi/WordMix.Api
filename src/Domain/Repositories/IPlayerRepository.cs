@@ -7,4 +7,6 @@ using Entities;
 public interface IPlayerRepository
 {
     Task InsertAsync(Player player, CancellationToken cancellationToken);
+    
+    Task<Player?> GetAsync(long id, CancellationToken cancellationToken);
 }

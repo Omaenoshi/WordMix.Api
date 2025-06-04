@@ -1,24 +1,24 @@
-namespace WordMix.Domain.Entities;
+namespace WordMix.Api.Contracts;
 
 /// <summary>
-///     Игрок
+///     Дто игрока
 /// </summary>
-public class Player
+public class PlayerDto
 {
     /// <summary>
-    ///     ИД
+    ///     ИД 
     /// </summary>
     public long Id { get; set; }
-    
+
     /// <summary>
     ///     Ник
     /// </summary>
     public string Username { get; set; } = null!;
     
     /// <summary>
-    ///     Опыт
+    ///     Почта
     /// </summary>
-    public int Experience { get; set; }
+    public string Email { get; set; } = null!;
     
     /// <summary>
     ///     Баланс
@@ -26,12 +26,12 @@ public class Player
     public int Balance { get; set; }
     
     /// <summary>
-    ///     Ссылка на аватар
+    ///     Опыт
     /// </summary>
-    public string? AvatarUrl { get; set; }
+    public int Experience { get; set; }
     
     /// <summary>
-    ///     ИД пользователя
+    ///     Уровень
     /// </summary>
-    public long UserId { get; set; }
+    public int Level { get; set; }
 }
