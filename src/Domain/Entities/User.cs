@@ -45,5 +45,5 @@ public class User
     /// <summary>
     ///     Время обновления
     /// </summary>
-    public DateTimeOffset UpdatedAt { get; set; }
+    public DateTimeOffset? UpdatedAt { get; set; }
 }
