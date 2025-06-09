@@ -37,6 +37,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Api.Contracts\Api.Contracts.csproj"/>
         <ProjectReference Include="..\Domain\Domain.csproj"/>
+        <ProjectReference Include="..\DataAccess\DataAccess.csproj"/>
     </ItemGroup>
 
     <ItemGroup>

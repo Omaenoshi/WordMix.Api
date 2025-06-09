@@ -34,5 +34,35 @@ public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
 
         foreach (var xmlFile in xmlFiles)
             options.IncludeXmlComments(xmlFile);
+        
+        AddAuthorization(options);
+    }
+    
+    private static void AddAuthorization(SwaggerGenOptions options)
+    {
+        options.AddSecurityDefinition("Bearer",
+                                      new OpenApiSecurityScheme
+                                          {
+                                              In = ParameterLocation.Header,
+                                              Description = "Enter a valid token",
+                                              Name = "Authorization",
+                                              Type = SecuritySchemeType.Http,
+                                              BearerFormat = "JWT",
+                                              Scheme = "Bearer"
+                                          });
+        options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                                           {
+                                               {
+                                                   new OpenApiSecurityScheme
+                                                       {
+                                                           Reference = new OpenApiReference
+                                                                           {
+                                                                               Type = ReferenceType.SecurityScheme,
+                                                                               Id = "Bearer"
+                                                                           }
+                                                       },
+                                                   Array.Empty<string>()
+                                               }
+                                           });
     }
 }

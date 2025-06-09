@@ -15,6 +15,8 @@ using WordMix.Api.Infrastructure.OpenTelemetry;
 using WordMix.Api.Infrastructure.Serialization;
 using WordMix.Api.Infrastructure.Swagger;
 using WordMix.Api.Infrastructure.Versioning;
+using WordMix.DataAccess.Infrastructure;
+using WordMix.Domain.Infrastructure;
 using WordMix.Domain.Options;
 
 var serviceName = typeof(WordMix.Api.Program).Assembly.GetName().Name;
@@ -73,13 +75,17 @@ services
     .AddVersioning()
     .AddSwagger();
 services
-    .AddRelationalDb(NpgsqlFactory.Instance, builder.Configuration.GetConnectionString("Main"));
+    .AddRelationalDb(NpgsqlFactory.Instance, builder.Configuration.GetConnectionString("Main"))
+    .AddDomain(builder.Configuration)
+    .AddDataAccess();
 
 var app = builder.Build();
 app
     .UseHealthChecks("/healthz")
     .UseOpenTelemetryPrometheusScrapingEndpoint()
     .UseRouting()
+    .UseAuthorization()
+    .UseAuthentication()
     .UseEndpoints(endpoints => endpoints.MapControllers())
     .UseSwagger(app.Services.GetRequiredService<IApiVersionDescriptionProvider>());
 

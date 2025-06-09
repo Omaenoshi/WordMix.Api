@@ -5,12 +5,14 @@ using System.Net.Mail;
 using System.Threading;
 using System.Threading.Tasks;
 using Interfaces;
+using Microsoft.Extensions.Options;
 using Options;
 
-public class EmailService(SmtpSettings smtpSettings) : IEmailService
+public class EmailService(IOptions<SmtpSettings> smtpOptions) : IEmailService
 {
     public async Task SendAsync(string email, string subject, string body, CancellationToken cancellationToken)
     {
+        var smtpSettings = smtpOptions.Value;
         using var message = new MailMessage(smtpSettings.FromEmail, email, subject, body);
         message.IsBodyHtml = false; 
 
