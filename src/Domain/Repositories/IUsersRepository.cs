@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Entities;
 
-public interface IUserRepository
+public interface IUsersRepository
 {
     Task InsertAsync(User user, CancellationToken cancellationToken);
     

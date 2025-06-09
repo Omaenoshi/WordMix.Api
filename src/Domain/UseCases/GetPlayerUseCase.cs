@@ -7,24 +7,25 @@ using Byndyusoft.Data.Relational;
 using Byndyusoft.ModelResult.Common;
 using Byndyusoft.ModelResult.ModelResults;
 using Repositories;
+using Services;
 using Services.Interfaces;
 
 public class GetPlayerUseCase(IDbSessionFactory dbSessionFactory, 
-                              IPlayerRepository playerRepository, 
-                              IUserRepository userRepository,
-                              ICurrentUserService currentUserService)
+                              IPlayersRepository playersRepository, 
+                              IUsersRepository usersRepository,
+                              ICurrentPlayerService currentPlayerService)
 {
     public async Task<ModelResult<PlayerDto>> GetAsync(CancellationToken cancellationToken)
     {
         await using var session = await dbSessionFactory.CreateSessionAsync(cancellationToken);
         
-        var id = currentUserService.UserId;
-        var player = await playerRepository.GetAsync(id, cancellationToken);
+        var id = currentPlayerService.PlayerId;
+        var player = await playersRepository.GetByIdAsync(id, cancellationToken);
 
         if (player == null)
             return CommonErrorResult.NotFound;
         
-        var user = await userRepository.GetByIdAsync(player.Id, cancellationToken);
+        var user = await usersRepository.GetByIdAsync(player.Id, cancellationToken);
 
         return new PlayerDto
                    {
@@ -33,27 +34,7 @@ public class GetPlayerUseCase(IDbSessionFactory dbSessionFactory,
                         Email = user!.Email,
                         Balance = player.Balance,
                         Experience = player.Experience,
-                        Level = CalculateLevel(player.Experience)
+                        Level = LevelService.CalculateLevel(player.Experience)
                    };
-    }
-    
-    private static int CalculateLevel(int experience)
-    {
-        var level = 1;
-
-        while (true)
-        {
-            var requiredXp = GetXpForLevel(level + 1);
-            if (experience < requiredXp)
-                return level;
-            level++;
-        }
-
-        static int GetXpForLevel(int level)
-        {
-            const int a = 50;
-            const int b = 50;
-            return a * level * level + b * level;
-        }
     }
 }

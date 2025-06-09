@@ -18,20 +18,23 @@ using Microsoft.IdentityModel.Tokens;
 using Options;
 using Repositories;
 
-public class LoginUserUseCase(IUserRepository userRepository,
-                              IOptions<JwtSettings> jwtOptionsAccessor)
+public class LoginUserUseCase(IUsersRepository usersRepository,
+                              IOptions<JwtSettings> jwtOptionsAccessor,
+                              IPlayersRepository playersRepository)
 {
     public async Task<ModelResult<TokenDto>> ExecuteAsync(LoginDto dto, CancellationToken cancellationToken)
     {
-        var user = await userRepository.GetByEmailAsync(dto.Email, cancellationToken);
+        var user = await usersRepository.GetByEmailAsync(dto.Email, cancellationToken);
         if (user is null)
             return CommonErrorResult.NotFound;
+        
+        var player = await playersRepository.GetByUserIdAsync(user.Id, cancellationToken);
 
         if (!VerifyPassword(dto.Password, user.PasswordHash, user.PasswordSalt))
             return new ErrorModelResult("Password", "Неверный пароль");
 
         var jwtOptions = jwtOptionsAccessor.Value;
-        var token = GenerateJwtToken(user, jwtOptions);
+        var token = GenerateJwtToken(player!, jwtOptions);
         
         return new TokenDto
                    {
@@ -47,12 +50,11 @@ public class LoginUserUseCase(IUserRepository userRepository,
         return computedHash.SequenceEqual(passwordHash);
     }
 
-    private static string GenerateJwtToken(User user, JwtSettings options)
+    private static string GenerateJwtToken(Player player, JwtSettings options)
     {
         var claims = new[]
                          {
-                             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                             new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                             new Claim(ClaimTypes.NameIdentifier, player.Id.ToString()),
                              new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                          };
 

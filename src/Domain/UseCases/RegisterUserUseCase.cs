@@ -14,15 +14,15 @@ using Services.Interfaces;
 
 public class RegisterUserUseCase(
     IDbSessionFactory sessionFactory,
-    IUserRepository userRepository,
-    IPlayerRepository playerRepository,
+    IUsersRepository usersRepository,
+    IPlayersRepository playersRepository,
     IEmailService emailService)
 {
     public async Task<ModelResult> ExecuteAsync(RegisterUserDto dto, CancellationToken cancellationToken)
     {
         await using var session = await sessionFactory.CreateCommittableSessionAsync(cancellationToken);
 
-        var user = await userRepository.GetByEmailAsync(dto.Email, cancellationToken);
+        var user = await usersRepository.GetByEmailAsync(dto.Email, cancellationToken);
 
         if (user != null)
             return new ErrorModelResult("Email", "Пользователь с такой почтой уже существует");
@@ -40,17 +40,18 @@ public class RegisterUserUseCase(
                               VerificationToken = verificationToken
                           };
 
-        await userRepository.InsertAsync(newUser, cancellationToken);
+        await usersRepository.InsertAsync(newUser, cancellationToken);
 
         var player = new Player
                          {
                              Username = dto.Username,
                              Balance = 0,
                              Experience = 0,
-                             AvatarUrl = null
+                             AvatarUrl = null,
+                             UserId = newUser.Id
                          };
 
-        await playerRepository.InsertAsync(player, cancellationToken);
+        await playersRepository.InsertAsync(player, cancellationToken);
 
         await session.CommitAsync(cancellationToken);
 
