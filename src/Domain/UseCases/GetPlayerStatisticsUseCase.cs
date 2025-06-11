@@ -1,5 +1,6 @@
 namespace WordMix.Domain.UseCases;
 
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,27 +9,20 @@ using Byndyusoft.Data.Relational;
 using Entities;
 using Repositories;
 using Services;
+using Services.Interfaces;
 
-public class GetPlayerStatisticsUseCase(IDbSessionFactory sessionFactory, IPlayersRepository playersRepository)
+public class GetPlayerStatisticsUseCase(IDbSessionFactory sessionFactory, IPlayersRepository playersRepository, ICurrentPlayerService currentPlayerService)
 {
     public async Task<PlayerStatisticsDto> GetAsync(CancellationToken cancellationToken)
     {
         await using var session = await sessionFactory.CreateSessionAsync(cancellationToken);
 
-        var players = await playersRepository.GetOrderByScore(10, cancellationToken);
+        var player = await playersRepository.GetByIdAsync(currentPlayerService.PlayerId, cancellationToken);
 
         return new PlayerStatisticsDto
                    {
-                       PlayerStatistics = players.Select(ToPlayerStatisticDto).ToArray()
-                   };
-    }
-
-    private static PlayerStatisticDto ToPlayerStatisticDto(Player player)
-    {
-        return new PlayerStatisticDto
-                   {
-                       Username = player.Username,
-                       Level = LevelService.CalculateLevel(player.Experience)
+                       Date = DateTimeOffset.Now,
+                       Score = player!.Experience
                    };
     }
 }
