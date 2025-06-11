@@ -1,6 +1,10 @@
 namespace WordMix.Api.Contracts;
 
+using System;
+
 public class PlayerStatisticsDto
 {
-    public PlayerStatisticDto[] PlayerStatistics { get; set; } = null!;
+    public DateTimeOffset? Date { get; set; }
+    
+    public int Score { get; set; }
 }

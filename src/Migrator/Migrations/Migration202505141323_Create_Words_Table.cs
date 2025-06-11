@@ -9,6 +9,7 @@ public class Migration202505141323_Create_Words_Table : ForwardOnlyMigration
     {
         Create.Table("words")
               .WithColumn("id").AsInt64().PrimaryKey().Identity()
-              .WithColumn("value").AsString(128).NotNullable();
+              .WithColumn("value").AsString(128).NotNullable()
+              .WithColumn("img").AsString(128).Nullable();
     }
 }

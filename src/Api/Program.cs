@@ -37,7 +37,7 @@ services.AddCors(options =>
                      {
                          options.AddPolicy("AllowReactApp", builder =>
                                                                 {
-                                                                    builder.WithOrigins("http://localhost:3000") // адрес фронта
+                                                                    builder.WithOrigins("https://jeeringly-virile-bream.cloudpub.ru") // адрес фронта
                                                                            .AllowAnyHeader()
                                                                            .AllowAnyMethod();
                                                                 });
