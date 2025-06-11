@@ -33,6 +33,15 @@ builder.Host.UseSerilog((context, configuration) =>
                        );
 
 var services = builder.Services;
+services.AddCors(options =>
+                     {
+                         options.AddPolicy("AllowReactApp", builder =>
+                                                                {
+                                                                    builder.WithOrigins("http://localhost:3000") // адрес фронта
+                                                                           .AllowAnyHeader()
+                                                                           .AllowAnyMethod();
+                                                                });
+                     });
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 services.AddOpenTelemetry(
@@ -84,8 +93,9 @@ app
     .UseHealthChecks("/healthz")
     .UseOpenTelemetryPrometheusScrapingEndpoint()
     .UseRouting()
-    .UseAuthorization()
     .UseAuthentication()
+    .UseAuthorization()
+    .UseCors("AllowReactApp")
     .UseEndpoints(endpoints => endpoints.MapControllers())
     .UseSwagger(app.Services.GetRequiredService<IApiVersionDescriptionProvider>());
 

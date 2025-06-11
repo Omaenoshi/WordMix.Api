@@ -8,7 +8,8 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddDomain(this IServiceCollection services, IConfiguration configuration)
     {
-        return services.AddOptions<SmtpSettings>().Bind(configuration.GetSection("SmtpSettings"))
+        return services.AddOptions<SmtpSettings>().Bind(configuration.GetSection("Smtp")).Services
+                       .AddOptions<JwtSettings>().Bind(configuration.GetSection("Jwt"))
                        .ValidateDataAnnotations()
                        .ValidateOnStart()
                        .Services

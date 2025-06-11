@@ -1,5 +1,6 @@
 namespace WordMix.Domain.Services;
 
+using System;
 using System.Net;
 using System.Net.Mail;
 using System.Threading;
@@ -20,6 +21,6 @@ public class EmailService(IOptions<SmtpSettings> smtpOptions) : IEmailService
         client.Credentials = new NetworkCredential(smtpSettings.Username, smtpSettings.Password);
         client.EnableSsl = smtpSettings.EnableSsl;
         
-        await Task.Run(() => client.Send(message), cancellationToken);
+        await client.SendMailAsync(message, cancellationToken);
     }
 }

@@ -20,10 +20,12 @@ public class StartGameUseCase(IDbSessionFactory sessionFactory,
         await using var session = await sessionFactory.CreateCommittableSessionAsync(cancellationToken);
         
         var words = await wordsRepository.GetRandomWordsAsync(5, cancellationToken);
+        
+        var correctWord = await wordsRepository.GetWordWithUrlRandomAsync(cancellationToken);
 
-        var correctWord = words.First();
-        var shuffledWord = ShuffleWord(correctWord.Value);
-
+        var words2 = words.ToList();
+        words2.Add(correctWord);
+        var rnd = new Random();
         var game = new Game
                        {
                            PlayerId = currentPlayerService.PlayerId,
@@ -36,8 +38,8 @@ public class StartGameUseCase(IDbSessionFactory sessionFactory,
         return new GameDto
                    {
                        Id = game.Id,
-                       Words = words.Select(ToWordDto).ToArray(),
-                       ShuffledWord = shuffledWord
+                       Words = words2.OrderBy(_ => rnd.Next()).Select(ToWordDto).ToArray(),
+                       Img = correctWord.Img!
                    };
     }
     
