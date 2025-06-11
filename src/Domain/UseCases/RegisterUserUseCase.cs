@@ -59,7 +59,7 @@ public class RegisterUserUseCase(
         const string subject = "Подтверждение регистрации";
         var body = $"Пожалуйста, подтвердите вашу почту, перейдя по ссылке: {confirmationLink}";
 
-        await emailService.SendAsync(dto.Email, subject, body, cancellationToken);
+        //await emailService.SendAsync(dto.Email, subject, body, cancellationToken);
 
         return ModelResult.Ok;
     }

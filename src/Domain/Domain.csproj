@@ -10,6 +10,7 @@
     <ItemGroup>
         <PackageReference Include="Byndyusoft.Data.Relational" Version="0.15.1" />
         <PackageReference Include="Byndyusoft.Data.Relational.Abstractions" Version="0.15.1" />
+        <PackageReference Include="Byndyusoft.Data.Relational.QueryBuilder" Version="2.2.0" />
         <PackageReference Include="Byndyusoft.ModelResult" Version="1.4.0" />
         <PackageReference Include="Byndyusoft.ModelResult.AspNetCore" Version="1.4.0" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.5"/>

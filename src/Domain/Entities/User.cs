@@ -1,11 +1,12 @@
 namespace WordMix.Domain.Entities;
 
 using System;
+using Byndyusoft.Data.Relational.QueryBuilder.Abstractions.Extensions;
 
 /// <summary>
 ///     Пользователь
 /// </summary>
-public class User 
+public class User : IEntity
 {
     /// <summary>
     ///     ИД

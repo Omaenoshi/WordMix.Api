@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Api.Contracts;
+using Byndyusoft.Data.Relational;
 using Byndyusoft.ModelResult.Common;
 using Byndyusoft.ModelResult.ModelResults;
 using Entities;
@@ -18,12 +19,14 @@ using Microsoft.IdentityModel.Tokens;
 using Options;
 using Repositories;
 
-public class LoginUserUseCase(IUsersRepository usersRepository,
+public class LoginUserUseCase(IDbSessionFactory sessionFactory,
+                              IUsersRepository usersRepository,
                               IOptions<JwtSettings> jwtOptionsAccessor,
                               IPlayersRepository playersRepository)
 {
     public async Task<ModelResult<TokenDto>> ExecuteAsync(LoginDto dto, CancellationToken cancellationToken)
     {
+        await using var session = await sessionFactory.CreateSessionAsync(cancellationToken);
         var user = await usersRepository.GetByEmailAsync(dto.Email, cancellationToken);
         if (user is null)
             return CommonErrorResult.NotFound;
@@ -44,7 +47,10 @@ public class LoginUserUseCase(IUsersRepository usersRepository,
 
     private static bool VerifyPassword(string password, byte[] passwordHash, byte[] salt)
     {
-        var combined = Encoding.UTF8.GetBytes(password + Convert.ToBase64String(salt));
+        var passwordBytes = Encoding.UTF8.GetBytes(password);
+        var combined = new byte[passwordBytes.Length + salt.Length];
+        Buffer.BlockCopy(passwordBytes, 0, combined, 0, passwordBytes.Length);
+        Buffer.BlockCopy(salt, 0, combined, passwordBytes.Length, salt.Length);
         var computedHash = SHA256.HashData(combined);
 
         return computedHash.SequenceEqual(passwordHash);

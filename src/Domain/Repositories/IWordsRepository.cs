@@ -9,4 +9,6 @@ public interface IWordsRepository
     Task<Word[]> GetRandomWordsAsync(int limit, CancellationToken cancellationToken);
     
     Task<Word?> GetWordByIdAsync(long id, CancellationToken cancellationToken);
+    
+    Task<Word> GetWordWithUrlRandomAsync(CancellationToken cancellationToken);
 }

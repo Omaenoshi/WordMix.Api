@@ -1,11 +1,11 @@
 namespace WordMix.Domain.Entities;
 
-using Api.Contracts;
+using Byndyusoft.Data.Relational.QueryBuilder.Abstractions.Extensions;
 
 /// <summary>
 ///     Игра
 /// </summary>
-public class Game
+public class Game : IEntity
 {
     /// <summary>
     ///     ИД

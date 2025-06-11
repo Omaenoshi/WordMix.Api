@@ -18,5 +18,5 @@ public class GameDto
     /// <summary>
     ///     Вопрос
     /// </summary>
-    public string ShuffledWord { get; set; } = default!;
+    public string Img { get; set; } = default!;
 }

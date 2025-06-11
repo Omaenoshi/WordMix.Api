@@ -1,9 +1,11 @@
 namespace WordMix.Domain.Entities;
 
+using Byndyusoft.Data.Relational.QueryBuilder.Abstractions.Extensions;
+
 /// <summary>
 ///     Слово для игры
 /// </summary>
-public class Word
+public class Word : IEntity
 {
     /// <summary>
     ///     ИД
@@ -14,4 +16,6 @@ public class Word
     ///     Слово
     /// </summary>
     public string Value { get; init; } = null!;
+    
+    public string? Img {get; set;}
 }

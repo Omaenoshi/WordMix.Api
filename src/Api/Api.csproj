@@ -8,6 +8,7 @@
         <AssemblyName Condition="'$(SERVICE_NAME)' == ''">wordmix-api-api</AssemblyName>
         <RootNamespace>WordMix.Api</RootNamespace>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <UserSecretsId>04f8b2e2-81bd-4fed-8319-f2f7bae2b6da</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
